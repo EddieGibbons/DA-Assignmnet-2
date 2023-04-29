@@ -1,0 +1,58 @@
+---
+format: html
+editor: visual
+---
+
+
+
+```{r echo=FALSE}
+library(tidyverse)
+```
+
+```{r echo=F}
+data = read.csv("unicef_indicator_1 (1).csv")
+data = na.omit(data)
+data2 = read.csv("unicef_metadata (1).csv")
+data2 = na.omit(data2)
+world_cord=map_data("world")
+dt = merge(data, world_cord, by.x = "country", by.y = "region")
+dtt = merge(data2, world_cord, by.x = "country", by.y = "region")
+view(data2)
+```
+
+there where numbers of missing value, the missing value were removed.
+
+```{r echo=FALSE}
+library(ggplot2)
+
+ggplot()+
+  geom_map(data = world_cord, map = world_cord, aes(long,lat, map_id=region), color = "white", size = 0.2)+
+  geom_point(data = dt, aes(long, lat, color = country))
+```
+
+the above map shows us the countries women aged 15-19 who make their own informed decisions regarding sexual relations, contraceptive use and reproductive health care
+
+```{r echo=FALSE}
+library(ggplot2)
+
+ggplot(data, aes(x=time_period, fill=sex))+geom_bar(color = "red")+theme_bw()
+```
+
+from the above figure we observed that in 2018 and 2019 females make their own informed decisions regarding sexual relations, contraceptive use and reproductive health care compare to other time periods.
+
+```{r echo=FALSE}
+library(ggplot2)
+
+ggplot(data, aes(x=time_period, y =obs_value))+geom_point( color = "red")+geom_smooth(method = "lm", se=F)+ theme_bw()
+```
+
+from the figure above we observe that there is a negative relationship between observed number of females aged 15-19 years who make their own decisions regarding sexual relations, contraceptive use and reproductive health care and population total.
+
+```{r echo=FALSE}
+
+
+x= count(data, time_period, obs_value)
+
+ggplot(x, aes(x=time_period, y = obs_value))+geom_line( color = "red")
+```
+from the figure above we obsere that there is no particular pattern in the number of females aged 15-19 years who make their own decisions regarding sexual relations, contraceptive use and reproductive health care from 2015 to 2022
